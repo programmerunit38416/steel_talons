@@ -1,0 +1,84 @@
+*
+* SYS.MAC (reconstructed from the Steel Talons binary)
+*
+INITSYS		MACRO
+		LDA	#$0D			;COLOR, FOURBIT, DMA ENABLE
+		STA	DISPCTL_RAM
+		LDA	#$08
+		STA	SPRSYS_RAM
+		STA	SPRSYS
+		LDA	#$08
+		STA	MAPCTL
+		LDA	#$0A
+		STA	IODAT_RAM
+		STA	IODAT
+		STA	IODIR_RAM
+		STA	IODIR
+		LDA	#$04
+		STA	SERCTL
+		STZ	TimeoutCount+1
+		STZ	TimeoutCount+2
+		LDA	#<UserIntHandler
+		STA	CPU_IRQ
+		LDA	#>UserIntHandler
+		STA	CPU_IRQ+1
+		ENDM
+*
+INITINT		MACRO	TABLE,MODE
+		LDX	#$0F
+?INITLP#
+		LDA	#>IntReturn
+		STA	TABLE,X
+		DEX
+		LDA	#<IntReturn
+		STA	TABLE,X
+		DEX
+		BPL	?INITLP#
+		ENDM
+*
+SETDISP_60	MACRO
+		LDA	#$9E
+		STA	HCOUNT
+		LDA	#$18
+		STA	HCOUNT+1
+		LDA	#$68
+		STA	VCOUNT
+		LDA	#$9F
+		STA	VCOUNT+1
+		LDA	#$29
+		STA	PBKUP
+		ENDM
+*
+WAITEOF		MACRO
+		LDA	#DISPLAY_EOFFLAG
+		TRB	DisplayFlags
+?WEOF#
+		BIT	DisplayFlags
+		BEQ	?WEOF#
+		ENDM
+*
+TIMEOUT		MACRO
+		LDA	SWITCHES
+		AND	#$01
+		ORA	JOYSTICK
+		BEQ	?TO1#
+		STZ	TimeoutCount+1
+		STZ	TimeoutCount+2
+?TO1#
+		INC	TimeoutCount
+		BPL	?TO3#
+		STZ	TimeoutCount
+		INC	TimeoutCount+1
+		BPL	?TO3#
+		STZ	TimeoutCount+1
+		LDA	IODAT
+		AND	#$01
+		BEQ	?TO2#
+		INC	TimeoutCount+2
+		LDA	TimeoutCount+2
+		CMP	#$0D
+		BCC	?TO3#
+?TO2#
+		STZ	SYSCTL1
+?TO3#
+		ENDM

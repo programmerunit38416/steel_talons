@@ -1,0 +1,4 @@
+@ECHO OFF
+CD %1
+COPY %1.ZIP B:
+CD ..

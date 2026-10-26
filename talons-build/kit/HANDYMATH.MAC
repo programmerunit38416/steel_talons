@@ -1,0 +1,8 @@
+*
+* HANDYMATH.MAC (reconstructed from the Steel Talons binary)
+*
+WAITMATH	MACRO
+?WM#
+		BIT	SPRSYS
+		BMI	?WM#
+		ENDM

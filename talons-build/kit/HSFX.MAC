@@ -1,0 +1,6 @@
+*
+* HSFX.MAC (reconstructed)
+*
+PLAYHSFX	MACRO
+		JSR	StartHSFX
+		ENDM

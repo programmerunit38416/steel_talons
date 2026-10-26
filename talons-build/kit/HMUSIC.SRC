@@ -1,0 +1,719 @@
+*
+* HMUSIC.SRC (reconstructed from the Steel Talons binary)
+*
+* Handy music driver (runs from the timer 6 interrupt, see InitHMusic).
+*
+InitHMusic
+		PHP
+		SEI
+		JSR	InitHSFX
+		LDX	#HMusicVarEnd-HMusicVarStart
+L93B3
+		STZ	HMusicVarStart-1,X		;CLEAR MUSIC VARIABLES
+		DEX
+		BNE	L93B3
+		LDA	#<hmusic_driver			;HOOK TIMER 6 INTERRUPT
+		STA	sysIntTable+(6*2)
+		LDA	#>hmusic_driver
+		STA	sysIntTable+(6*2)+1
+		PLP
+		RTS
+PlayMusic
+		INC	audio_lockout
+		JSR	setUpMusicPtrs
+		LDA	#$00
+		LDY	#$07
+L93CF
+		STA	(audio_ptr),Y
+		DEY
+		BPL	L93CF
+		LDY	#$08
+		LDA	(audio_ptr),Y
+		CMP	#$05
+		BCC	L93DE
+		LDA	#$04
+L93DE
+		ASL	A
+		DEC	A
+		TAY
+L93E1
+		LDA	(voiceoffsets_ptr),Y
+		STA	(audio_ptr),Y
+		DEY
+		BPL	L93E1
+		BRA	addMusicEntry
+AddMusic
+		INC	audio_lockout
+		JSR	setUpMusicPtrs
+addMusicEntry
+		STZ	instance
+		LDA	#$6A
+		STA	clear_voice_end
+		LDA	#$68
+		STA	voice1
+		LDA	#$66
+		STA	voice2
+		LDA	#$64
+		STA	voice3
+		LDX	#$03
+		LDY	#$00
+L940B
+		STZ	HMusicVarStart,X
+		STZ	SFX_to_cancel,X
+		LDA	#$04
+		STA	VoiceHSFXChannel,X
+		LDA	(audio_ptr),Y
+		INY
+		STA	voicedata_ptrl,X
+		LDA	(audio_ptr),Y
+		INY
+		STA	voicedata_ptrh,X
+		ORA	voicedata_ptrl,X
+		BEQ	L942A
+		JSR	setNewVoice
+L942A
+		DEX
+		BPL	L940B
+voiceReturn
+		LDX	instance
+		DEX
+		DEC	audio_lockout
+		CLC
+		RTS
+setUpMusicPtrs
+		PHA
+		PHX
+		JSR	stopAllVoices
+		PLX
+		PLA
+		STA	audio_ptr
+		STA	hmusic_base
+		STX	audio_ptr+1
+		STX	hmusic_base+1
+		CLC
+		ADC	#$09
+		STA	voiceoffsets_ptr
+		TXA
+		ADC	#$00
+		STA	voiceoffsets_ptr+1
+		RTS
+setNewVoice
+		CLC
+		LDA	hmusic_base
+		ADC	voicedata_ptrl,X
+		STA	voicedata_ptrl,X
+		LDA	hmusic_base+1
+		ADC	voicedata_ptrh,X
+		STA	voicedata_ptrh,X
+		INC	HMusicVarStart,X
+		STZ	voice_endframel,X
+		STZ	voice_endframeh,X
+		LDA	#$FF
+		STA	frames_alivel,X
+		STA	frames_aliveh,X
+		LDA	instance
+		STA	VoiceInstance,X
+		INC	instance
+		STZ	ring_flag,X
+		STZ	restore_ds,X
+musicReturn
+		RTS
+StopMusic
+		INC	audio_lockout
+		JSR	stopAllVoices
+		DEC	audio_lockout
+		RTS
+stopAllVoices
+		LDX	#$03
+L9492
+		PHX
+		JSR	stopVoiceX
+		PLX
+		DEX
+		BPL	L9492
+		RTS
+stopVoiceX
+		LDA	HMusicVarStart,X
+		BNE	L94A1
+		RTS
+L94A1
+		STZ	HMusicVarStart,X
+muteVoiceX
+		LDY	voice_offsets,X
+		LDA	clear_voice_end,Y
+		ORA	SFX_to_cancel,X
+		TAY
+		JMP	StopHSFX
+hmusic_driver
+		INC	audio_dropout
+		LDA	audio_lockout
+		BNE	L94BE
+		LDA	audio_interruptus
+		BEQ	L94C4
+L94BE
+		INC	audio_dropout
+		PLX
+		PLA
+		RTI
+L94C4
+		INC	audio_interruptus
+		CLI
+hmusic_interrupt_core
+		PHY
+		LDX	#$03
+voiceLoop
+		LDA	HMusicVarStart,X
+		BEQ	voiceLoopEnd
+		INC	frames_alivel,X
+		BNE	L94D8
+		INC	frames_aliveh,X
+L94D8
+		LDA	frames_alivel,X
+		CMP	voice_endframel,X
+		BNE	L950B
+		LDA	frames_aliveh,X
+		CMP	voice_endframeh,X
+		BNE	L950B
+		LDA	VoiceHSFXChannel,X
+		CMP	#$04
+		BCS	L9500
+		PHX
+		LDY	voice_offsets,X
+		TAX
+		LDA	clear_voice_end,Y
+		CMP	ChannelInUse,X
+		BNE	L94FF
+		JSR	freeChannelX
+L94FF
+		PLX
+L9500
+		JSR	getNextData
+		STZ	frames_alivel,X
+		STZ	frames_aliveh,X
+		BRA	voiceLoopEnd
+L950B
+		LDY	voice_offsets,X
+		LDA	frames_alivel,X
+		CMP	releaseframe_v0,Y
+		LDA	frames_aliveh,X
+		SBC	releaseframe_v0+1,Y
+		BCC	voiceLoopEnd
+		LDA	VoiceHSFXChannel,X
+		CMP	#$04
+		BCS	voiceLoopEnd
+		PHX
+		TAX
+		LDA	clear_voice_end,Y
+		CMP	ChannelInUse,X
+		BNE	L9540
+		LDA	volumel,X
+		CMP	releaseframe_v0+8,Y
+		LDA	volumeh,X
+		BEQ	L953D
+		SBC	releaseframe_v0+9,Y
+		BCC	L9540
+L953D
+		JSR	freeChannelX
+L9540
+		PLX
+voiceLoopEnd
+		DEX
+		BPL	voiceLoop
+		LDX	#$03
+voiceLaunchLoop
+		ASL	new_note,X
+		BCC	L9566
+		PHX
+		LDY	voice_offsets,X
+		LDA	clear_voice_end,Y
+		TAY
+		LDA	voice_offsets,X
+		CLC
+		ADC	#<attackframe_v0
+		LDX	#>attackframe_v0
+		BCC	L955E
+		INX
+L955E
+		JSR	StartHSFX
+		TXA
+		PLX
+		STA	VoiceHSFXChannel,X
+L9566
+		DEX
+		BPL	voiceLaunchLoop
+		JSR	hsfx_driver_grunt
+		PLY
+		DEC	audio_dropout
+		BEQ	L9575
+		JMP	hmusic_interrupt_core
+L9575
+		STZ	audio_interruptus
+		PLX
+		PLA
+		RTI
+getNextData
+		LDY	voice_offsets,X
+		ASL	restore_ds,X
+		BCC	L959B
+		LDA	save_decayl,X
+		STA	decayframe_v0,Y
+		LDA	save_decayh,X
+		STA	decayframe_v0+1,Y
+		LDA	save_sustainl,X
+		STA	sustainframe_v0,Y
+		LDA	save_sustainh,X
+		STA	sustainframe_v0+1,Y
+L959B
+		STZ	did_innernext
+		STZ	did_outernext
+		STZ	did_ring_end
+		LDA	SFX_to_cancel,X
+		BEQ	mloop_frame
+		STA	clear_voice_end,Y
+		TAY
+		PHX
+		JSR	StopHSFX
+		PLX
+		STZ	SFX_to_cancel,X
+mloop_frame
+		LDA	voicedata_ptrl,X
+		STA	audio_ptr
+		LDA	voicedata_ptrh,X
+		STA	audio_ptr+1
+		LDA	(audio_ptr)
+		BMI	do_CFW
+		JMP	do_note
+do_CFW
+		STA	hmflagsl
+		LDY	#$01
+		LDA	(audio_ptr),Y
+		STA	hmflagsh
+		INY
+		LDA	hmflagsh
+		AND	#$08
+		BEQ	ring_considered
+		LSR	did_ring_end
+		BCS	post_ring
+		LDA	ring_flag,X
+		BEQ	first_RING
+		LDA	audio_ptr
+		STA	ring1_returnl,X
+		LDA	audio_ptr+1
+		STA	ring1_returnh,X
+		LDA	#$02
+		STA	ring_flag,X
+		BRA	new_RING
+first_RING
+		LDA	audio_ptr
+		STA	ring0_returnl,X
+		LDA	audio_ptr+1
+		STA	ring0_returnh,X
+		INC	ring_flag,X
+new_RING
+		LDA	(audio_ptr),Y
+		ASL	A
+		TAY
+		LDA	(voiceoffsets_ptr),Y
+		ADC	hmusic_base
+		STA	voicedata_ptrl,X
+		INY
+		LDA	(voiceoffsets_ptr),Y
+		ADC	hmusic_base+1
+		STA	voicedata_ptrh,X
+		JMP	mloop_frame
+post_ring
+		INY
+ring_considered
+		LDA	did_innernext
+		ORA	did_outernext
+		BNE	mnext0_done
+		LDA	hmflagsh
+		AND	#$10
+		BEQ	mnext1_done
+		LDA	mloop_count1,X
+		BEQ	takeloop1
+		DEC	mloop_count1,X
+		BEQ	mnext1_done
+takeloop1
+		LDA	mloop_adrl1,X
+		STA	voicedata_ptrl,X
+		LDA	mloop_adrh1,X
+		STA	voicedata_ptrh,X
+		INC	did_innernext
+		JMP	mloop_frame
+mnext1_done
+		LDA	hmflagsh
+		AND	#$40
+		BEQ	mnext0_done
+		LDA	mloop_count0,X
+		BEQ	takeloop0
+		DEC	mloop_count0,X
+		BEQ	mnext0_done
+takeloop0
+		LDA	mloop_adrl0,X
+		STA	voicedata_ptrl,X
+		LDA	mloop_adrh0,X
+		STA	voicedata_ptrh,X
+		INC	did_outernext
+		JMP	mloop_frame
+mnext0_done
+		LDA	hmflagsh
+		AND	#$80
+		BEQ	mloop0_considered
+		LDA	did_innernext
+		ORA	did_outernext
+		BNE	mstuff0
+		LDA	audio_ptr
+		STA	mloop_adrl0,X
+		LDA	audio_ptr+1
+		STA	mloop_adrh0,X
+		LDA	(audio_ptr),Y
+		STA	mloop_count0,X
+mstuff0
+		INY
+mloop0_considered
+		LDA	hmflagsh
+		AND	#$20
+		BEQ	mloop1_considered
+		LDA	did_innernext
+		BNE	mstuff1
+		LDA	audio_ptr
+		STA	mloop_adrl1,X
+		LDA	audio_ptr+1
+		STA	mloop_adrh1,X
+		LDA	(audio_ptr),Y
+		STA	mloop_count1,X
+mstuff1
+		INY
+mloop1_considered
+		LDA	hmflagsh
+		AND	#$03
+		BEQ	asd_agd_considered
+		STA	gating,X
+		LDA	(audio_ptr),Y
+		STA	gatel,X
+		INY
+		LDA	(audio_ptr),Y
+		STA	gateh,X
+		INY
+asd_agd_considered
+		LDA	hmflagsl
+		AND	#$20
+		BEQ	msfx_considered
+		PHX
+		PHY
+		LDY	voice_offsets,X
+		LDA	clear_voice_end,Y
+		STA	SFX_to_cancel,X
+		STA	hsfx_temp
+		LDA	#$00
+		STA	clear_voice_end,Y
+		PLY
+		PHY
+		LDA	(audio_ptr),Y
+		ASL	A
+		TAY
+		LDA	(voiceoffsets_ptr),Y
+		CLC
+		ADC	hmusic_base
+		PHA
+		INY
+		LDA	(voiceoffsets_ptr),Y
+		ADC	hmusic_base+1
+		TAX
+		PLA
+		LDY	hsfx_temp
+		JSR	StartHSFX
+		PLY
+		INY
+		PLX
+		LDA	voicedata_ptrl,X
+		STA	audio_ptr
+		LDA	voicedata_ptrh,X
+		STA	audio_ptr+1
+msfx_considered
+		LDA	hmflagsl
+		AND	#$10
+		BEQ	user_considered
+		INY
+user_considered
+		LDA	hmflagsl
+		AND	#$08
+		BEQ	dur_tbl_considered
+		LDA	(audio_ptr),Y
+		CLC
+		ADC	hmusic_base
+		STA	voice_dur_ptrl,X
+		INY
+		LDA	(audio_ptr),Y
+		ADC	hmusic_base+1
+		STA	voice_dur_ptrh,X
+		INY
+dur_tbl_considered
+		LDA	hmflagsl
+		AND	#$04
+		BEQ	freq_tbl_considered
+		LDA	(audio_ptr),Y
+		CLC
+		ADC	hmusic_base
+		STA	voice_freq_ptrl,X
+		INY
+		LDA	(audio_ptr),Y
+		ADC	hmusic_base+1
+		STA	voice_freq_ptrh,X
+		INY
+freq_tbl_considered
+		LDA	hmflagsl
+		AND	#$02
+		BEQ	escape_considered
+		PHX
+		LDA	voice_offsets,X
+		STA	hsfx_temp
+		LDA	(audio_ptr),Y
+		CMP	#$FF
+		BNE	L975B
+		PHY
+		LDY	#$0A
+L974A
+		LDA	clear_voice,Y
+		ADC	hsfx_temp
+		TAX
+		STZ	clear_voice_end,X
+		STZ	clear_voice_end+1,X
+		DEY
+		BPL	L974A
+		PLY
+		INY
+L975B
+		LDA	(audio_ptr),Y
+		BPL	end_escape
+		INY
+		CMP	#$FF
+		BEQ	end_escape
+		AND	#$7F
+		CLC
+		ADC	hsfx_temp
+		TAX
+		LDA	(audio_ptr),Y
+		STA	clear_voice_end,X
+		INY
+		LDA	(audio_ptr),Y
+		STA	clear_voice_end+1,X
+		INY
+		BRA	L975B
+end_escape
+		PLX
+		PHY
+		LDY	voice_offsets,X
+		LDA	decayframe_v0,Y
+		STA	save_decayl,X
+		LDA	decayframe_v0+1,Y
+		STA	save_decayh,X
+		LDA	sustainframe_v0,Y
+		STA	save_sustainl,X
+		LDA	sustainframe_v0+1,Y
+		STA	save_sustainh,X
+		PLY
+escape_considered
+		LDA	hmflagsl
+		AND	#$01
+		BNE	end_voice
+		TYA
+		CLC
+		ADC	audio_ptr
+		STA	voicedata_ptrl,X
+		LDA	#$00
+		ADC	audio_ptr+1
+		STA	voicedata_ptrh,X
+		JMP	mloop_frame
+end_voice
+		LSR	ring_flag,X
+		BNE	return_from_ring1
+		BCS	return_from_ring0
+		STZ	HMusicVarStart,X
+		RTS
+return_from_ring1
+		LDA	ring1_returnl,X
+		LDY	ring1_returnh,X
+		BRA	ring_return
+return_from_ring0
+		LDA	ring0_returnl,X
+		LDY	ring0_returnh,X
+ring_return
+		STA	voicedata_ptrl,X
+		TYA
+		STA	voicedata_ptrh,X
+		INC	did_ring_end
+		JMP	mloop_frame
+do_note
+		PHX
+		AND	#$0F
+		ASL	A
+		TAY
+		LDA	#$04
+		STA	VoiceHSFXChannel,X
+		LDA	voice_freq_ptrl,X
+		STA	frequency_ptr
+		LDA	voice_freq_ptrh,X
+		STA	frequency_ptr+1
+		LDA	voice_dur_ptrl,X
+		STA	duration_ptr
+		LDA	voice_dur_ptrh,X
+		STA	duration_ptr+1
+		LDA	voice_offsets,X
+		TAX
+		LDA	(frequency_ptr),Y
+		STA	attackfreq_v0,X
+		INY
+		LDA	(frequency_ptr),Y
+		STA	attackfreq_v0+1,X
+		ORA	attackfreq_v0,X
+		PHA
+		LDA	(audio_ptr)
+		AND	#$70
+		LSR	A
+		LSR	A
+		LSR	A
+		TAY
+		LDA	(duration_ptr),Y
+		STA	endframe_v0,X
+		INY
+		LDA	(duration_ptr),Y
+		STA	endframe_v0+1,X
+		PLA
+		PLX
+		CMP	#$00
+		BEQ	L9823
+		LDA	#$80
+		STA	new_note,X
+L9823
+		LDA	(duration_ptr),Y
+		STA	voice_endframeh,X
+		DEY
+		LDA	(duration_ptr),Y
+		STA	voice_endframel,X
+		LDY	voice_offsets,X
+		LDA	gating,X
+		AND	#$01
+		BNE	L984A
+		SEC
+		LDA	voice_endframel,X
+		SBC	gatel,X
+		STA	releaseframe_v0,Y
+		LDA	voice_endframeh,X
+		SBC	gateh,X
+		BRA	L9853
+L984A
+		LDA	gatel,X
+		STA	releaseframe_v0,Y
+		LDA	gateh,X
+L9853
+		STA	releaseframe_v0+1,Y
+		LDA	sustainframe_v0,Y
+		CMP	releaseframe_v0,Y
+		LDA	sustainframe_v0+1,Y
+		SBC	releaseframe_v0+1,Y
+		BCC	L9899
+		LDA	#$80
+		STA	restore_ds,X
+		SEC
+		LDA	releaseframe_v0,Y
+		SBC	#$01
+		STA	sustainframe_v0,Y
+		LDA	releaseframe_v0+1,Y
+		SBC	#$00
+		STA	sustainframe_v0+1,Y
+		LDA	decayframe_v0,Y
+		CMP	sustainframe_v0,Y
+		LDA	decayframe_v0+1,Y
+		SBC	sustainframe_v0+1,Y
+		BCC	L9899
+		SEC
+		LDA	sustainframe_v0,Y
+		SBC	#$01
+		STA	decayframe_v0,Y
+		LDA	sustainframe_v0+1,Y
+		SBC	#$00
+		STA	decayframe_v0+1,Y
+L9899
+		INC	voicedata_ptrl,X
+		BNE	L98A1
+		INC	voicedata_ptrh,X
+L98A1
+		RTS
+voice_offsets
+		.BYTE	$00,$36,$6C,$A2
+clear_voice
+		.BYTE	$08,$0C,$0E,$10,$18,$1A,$22,$24
+		.BYTE	$26,$2C,$2E
+clear_voice_end
+voice0
+		.BYTE	$6A,$00
+attackframe_v0
+		.BYTE	$00,$00,$B0,$0F
+attackfreq_v0
+		.BYTE	$00,$00,$00,$00,$00,$00,$00,$00
+		.BYTE	$00,$00,$00,$00,$00,$00
+decayframe_v0
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+sustainframe_v0
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+releaseframe_v0
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+endframe_v0
+		.BYTE	$01,$00,$01,$00
+voice1
+		.BYTE	$68,$00
+attackframe_v1
+		.BYTE	$00,$00,$B0,$0F,$00,$00,$00,$00
+		.BYTE	$00,$00,$00,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+decayframe_v1
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+sustainframe_v1
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+releaseframe_v1
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+endframe_v1
+		.BYTE	$01,$00,$01,$00
+voice2
+		.BYTE	$66,$00
+attackframe_v2
+		.BYTE	$00,$00,$B0,$0F,$00,$00,$00,$00
+		.BYTE	$00,$00,$00,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+decayframe_v2
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+sustainframe_v2
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+releaseframe_v2
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+endframe_v2
+		.BYTE	$01,$00,$01,$00
+voice3
+		.BYTE	$64,$00
+attackframe_v3
+		.BYTE	$00,$00,$B0,$0F,$00,$00,$00,$00
+		.BYTE	$00,$00,$00,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+decayframe_v3
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+sustainframe_v3
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+releaseframe_v3
+		.BYTE	$01,$00,$B0,$00,$00,$00,$00,$00
+		.BYTE	$00,$00
+endframe_v3
+		.BYTE	$01,$00,$01,$00
+audio_interruptus

@@ -1,0 +1,393 @@
+*
+* HSFX.SRC (reconstructed from the Steel Talons binary)
+*
+* Handy sound effects driver.
+*
+InitHSFX
+		LDA	#$9E
+		LDY	#$40
+		STA	TIMER6+1
+		STY	TIMER6
+ResetHSFX
+		PHP
+		SEI
+		LDX	#$9E
+L90E8
+		STZ	endframe_v3+3,X
+		DEX
+		BNE	L90E8
+		LDX	#$03
+L90F0
+		JSR	FreeAudio
+		DEX
+		BPL	L90F0
+		PLP
+		RTS
+StartHSFX
+		INC	audio_lockout
+		STA	audio_ptr
+		STX	audio_ptr+1
+		JSR	find_lesser_channel
+		BCS	L910B
+		LDX	#$04
+		DEC	audio_lockout
+		SEC
+		RTS
+L910B
+		STA	ChannelInUse,X
+		LDA	audio_ptr
+		STA	hsfx_basel,X
+		LDA	audio_ptr+1
+		STA	hsfx_baseh,X
+		TXA
+		CLC
+		ADC	#$3C
+		SEC
+L911D
+		TAX
+		STZ	freql,X
+		SBC	#$04
+		BCS	L911D
+		JSR	update_frame
+		JSR	calc_next_audio
+		LDA	#$80
+		STA	launch_channel,X
+		DEC	audio_lockout
+		CLC
+		RTS
+StopHSFX
+		INC	audio_lockout
+		TYA
+		LDX	#$04
+L913B
+		DEX
+		BMI	L914B
+		CMP	ChannelInUse,X
+		BNE	L913B
+		JSR	freeChannelX
+		DEC	audio_lockout
+		CLC
+		RTS
+L914B
+		DEC	audio_lockout
+		SEC
+		RTS
+FreeAudio
+		INC	audio_lockout
+		JSR	freeChannelX
+		DEC	audio_lockout
+		CLC
+		RTS
+find_lesser_channel
+		PHY
+		LDX	#$03
+		LDY	#$02
+L9160
+		LDA	ChannelInUse,X
+		CMP	ChannelInUse,Y
+		BCC	L916A
+		TYA
+		TAX
+L916A
+		DEY
+		BPL	L9160
+		PLA
+		CMP	ChannelInUse,X
+		RTS
+freeChannelX
+		LDA	#$00
+killChannelX
+		STA	ChannelInUse,X
+		STZ	launch_channel,X
+		LDY	audio_offsets,X
+		LDA	AUDIO0+5,Y
+		AND	#$20
+		STA	AUDIO0+5,Y
+		BNE	L918A
+		STA	AUDIO0+2,Y
+L918A
+		RTS
+hsfx_driver_grunt
+		LDX	#$03
+L918D
+		LDY	audio_offsets,X
+		LDA	ChannelInUse,X
+		BNE	L91A4
+		LDA	AUDIO0+2,Y
+		BEQ	L91E2
+		BPL	L919E
+		INC	A
+		INC	A
+L919E
+		DEC	A
+		STA	AUDIO0+2,Y
+		BRA	L91E2
+L91A4
+		CMP	#$FF
+		BEQ	L91E2
+		LDA	volumeh,X
+		STA	AUDIO0,Y
+		LDA	preload_temp,X
+		STA	AUDIO0+4,Y
+		LDA	data_temp,X
+		STA	AUDIO0+1,Y
+		LDA	flagsl,X
+		AND	#$04
+		BNE	L91C6
+		ASL	shift_flag,X
+		BCC	L91D7
+L91C6
+		LDA	AUDIO0+7,Y
+		AND	#$0F
+		ORA	shift_temp,X
+		STA	AUDIO0+7,Y
+		LDA	shiftl,X
+		STA	AUDIO0+3,Y
+L91D7
+		LDA	AUDIO0+5,Y
+		AND	#$58
+		ORA	clock_temp,X
+		STA	AUDIO0+5,Y
+L91E2
+		DEX
+		BPL	L918D
+launch_channels
+		SEI
+		LDX	#$03
+launch_next_channel
+		LDA	launch_channel,X
+		BEQ	L9201
+		STZ	launch_channel,X
+		LDY	audio_offsets,X
+		LDA	AUDIO0+4,Y
+		STA	AUDIO0+6,Y
+		LDA	AUDIO0+5,Y
+		ORA	#$18
+		STA	AUDIO0+5,Y
+L9201
+		DEX
+		BPL	launch_next_channel
+advance_channels
+		CLI
+		LDX	#$03
+L9207
+		LDA	ChannelInUse,X
+		BEQ	L9246
+		CMP	#$FF
+		BEQ	L9246
+		LDA	current_framel,X
+		CMP	next_keyframel,X
+		BNE	L9225
+		LDA	current_frameh,X
+		CMP	next_keyframeh,X
+		BNE	L9225
+		JSR	update_frame
+		BRA	L9243
+L9225
+		PHX
+L9226
+		CLC
+		LDA	freq_interpl,X
+		ADC	freql,X
+		STA	freql,X
+		LDA	freq_interph,X
+		ADC	freqh,X
+		STA	freqh,X
+		TXA
+		CLC
+		ADC	#$08
+		TAX
+		CPX	#$20
+		BCC	L9226
+		PLX
+L9243
+		JSR	calc_next_audio
+L9246
+		DEX
+		BPL	L9207
+		RTS
+update_frame
+		LDA	hsfx_basel,X
+		STA	audio_ptr
+		LDA	hsfx_baseh,X
+		STA	audio_ptr+1
+loop_frame
+		LDY	#$01
+		LDA	(audio_ptr)
+		STA	current_framel,X
+		LDA	(audio_ptr),Y
+		STA	current_frameh,X
+		INY
+		LDA	(audio_ptr),Y
+		STA	flagsl,X
+		INY
+		LDA	(audio_ptr),Y
+		STA	flagsh,X
+		INY
+		ASL	top_of_loop0
+		BCS	stuff0
+		LDA	flagsh,X
+		AND	#$40
+		BEQ	next0_done
+		LDA	loop_count0,X
+		BEQ	infinite0
+		DEC	loop_count0,X
+		BEQ	next0_done
+infinite0
+		LDA	loop_adrl0,X
+		STA	audio_ptr
+		LDA	loop_adrh0,X
+		STA	audio_ptr+1
+		LDA	#$80
+		STA	top_of_loop0
+		BRA	loop_frame
+next0_done
+		LDA	flagsh,X
+		AND	#$80
+		BEQ	no_loop0
+		LDA	audio_ptr
+		STA	loop_adrl0,X
+		LDA	audio_ptr+1
+		STA	loop_adrh0,X
+		LDA	(audio_ptr),Y
+		STA	loop_count0,X
+stuff0
+		INY
+no_loop0
+		ASL	top_of_loop1
+		BCS	stuff1
+		LDA	flagsh,X
+		AND	#$10
+		BEQ	next1_done
+		LDA	loop_count1,X
+		BEQ	infinite1
+		DEC	loop_count1,X
+		BEQ	next1_done
+infinite1
+		LDA	loop_adrl1,X
+		STA	audio_ptr
+		LDA	loop_adrh1,X
+		STA	audio_ptr+1
+		LDA	#$80
+		STA	top_of_loop1
+		JMP	loop_frame
+next1_done
+		LDA	flagsh,X
+		AND	#$20
+		BEQ	no_loop1
+		LDA	audio_ptr
+		STA	loop_adrl1,X
+		LDA	audio_ptr+1
+		STA	loop_adrh1,X
+		LDA	(audio_ptr),Y
+		STA	loop_count1,X
+stuff1
+		INY
+no_loop1
+		LDA	flagsl,X
+		ASL	A
+		EOR	flagsh,X
+		AND	#$E0
+		EOR	flagsh,X
+		ROL	A
+		ROL	A
+		ROL	A
+		ROL	A
+		STA	hsfx_temp
+		PHX
+L92FD
+		BPL	L930B
+		LDA	(audio_ptr),Y
+		STA	freql,X
+		INY
+		LDA	(audio_ptr),Y
+		STA	freqh,X
+		INY
+L930B
+		CLC
+		TXA
+		ADC	#$08
+		TAX
+		ASL	hsfx_temp
+		BNE	L92FD
+		PLX
+		LDA	flagsh,X
+		AND	#$04
+		BEQ	L931E
+		LDA	#$80
+L931E
+		STA	shift_flag,X
+		LDA	flagsl,X
+		AND	#$08
+		ASL	A
+		ASL	A
+		STA	integrate,X
+		LDA	flagsl,X
+		AND	#$01
+		BNE	end_of_effect
+		TYA
+		CLC
+		ADC	audio_ptr
+		STA	hsfx_basel,X
+		LDA	#$00
+		ADC	audio_ptr+1
+		STA	hsfx_baseh,X
+		LDA	(audio_ptr),Y
+		STA	next_keyframel,X
+		INY
+		LDA	(audio_ptr),Y
+		STA	next_keyframeh,X
+		RTS
+end_of_effect
+		JMP	freeChannelX
+calc_next_audio
+		LDY	#$07
+		LDA	freql,X
+		STA	hsfx_temp
+		LDA	freqh,X
+L9359
+		ASL	hsfx_temp
+		ROL	A
+		DEY
+		BCS	L9361
+		BNE	L9359
+L9361
+		ROR	A
+end_freq
+		STA	preload_temp,X
+		TYA
+		STA	clock_temp,X
+		LDA	shifth,X
+		ASL	A
+		ASL	A
+		ASL	A
+		ASL	A
+		STA	shift_temp,X
+		LDA	feedbackl,X
+		ASL	A
+		STA	hsfx_temp
+		LDA	feedbackh,X
+		ROL	A
+		ASL	hsfx_temp
+		ROL	A
+		ASL	hsfx_temp
+		ROL	A
+		ASL	hsfx_temp
+		ROL	A
+		CMP	#$80
+		EOR	feedbackh,X
+		AND	#$3F
+		EOR	feedbackh,X
+		STA	data_temp,X
+		LDA	#$00
+		ROR	A
+		ORA	integrate,X
+		ORA	clock_temp,X
+		STA	clock_temp,X
+		INC	current_framel,X
+		BNE	L93A7
+		INC	current_frameh,X
+L93A7
+		RTS
+audio_offsets
+		.BYTE	$00,$08,$10,$18

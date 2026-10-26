@@ -1,0 +1,9 @@
+*
+* FILE - M5.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	M5.PAL
+	INCLUDE	M5.HCR
+*
+* END M5.ASM
+*

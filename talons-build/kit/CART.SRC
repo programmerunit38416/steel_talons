@@ -1,0 +1,171 @@
+*
+* CART.SRC (reconstructed from the Steel Talons binary)
+*
+* Cartridge file system: bank 0 reads through RCART_0, the page is shifted
+* into the address counter via IODAT/SYSCTL1, and each ROM page holds
+* ROMPAGESIZE bytes.  The directory follows the ROM_HEADER_SIZE boot header.
+*
+CartOffsetLow	BLKB	1,$FF		;OFFSET WITHIN CURRENT PAGE
+CartOffsetHigh	BLKB	1,$FF		;
+CartPage	BLKB	1,$FF		;CURRENT ROM PAGE
+CartIOCount	BLKB	2,$FF		;BYTES LEFT (+1 PER BYTE)
+CartDirectory	BLKB	8,$FF		;DIRECTORY ENTRY OF OPEN FILE
+*
+* OpenFile0 - A,X,Y = page/offset of a directory entry (from GetDirAddress).
+* Reads the entry into CartDirectory and seeks to the start of the file.
+*
+OpenFile0
+		JSR	SetCartAddress
+		LDA	#ROMDIR_ENTRY_SIZE+1
+		STA	CartIOCount
+		LDA	#$01
+		STA	CartIOCount+1
+		LDA	#<CartDirectory
+		STA	sysptr
+		LDA	#>CartDirectory
+		STA	sysptr+1
+		JSR	readCart0Grunt
+		LDA	CartDirectory+ROMDIR_PAGE
+		LDX	CartDirectory+ROMDIR_OFFSET
+		LDY	CartDirectory+ROMDIR_OFFSET+1
+*
+* SetCartAddress - A = page, X/Y = offset low/high
+*
+SetCartAddress
+		STA	CartPage
+		STX	CartOffsetLow
+		STY	CartOffsetHigh
+		JSR	SetCartPage
+SetCartOffset
+		LDY	CartOffsetHigh
+		LDX	CartOffsetLow
+		INY
+		INX
+		BRA	?SKIPENTRY
+?SKIP
+		LDA	RCART_0
+?SKIPENTRY
+		DEX
+		BNE	?SKIP
+		DEY
+		BNE	?SKIP
+RestoreReturn
+		LDA	IODAT_RAM
+		ORA	#CART_ADDR_DATA
+		STA	IODAT_RAM
+		STA	IODAT
+		RTS
+*
+* ReadFile0 - read the open file.  A = 0: X/Y is the destination;
+* A >= 1: load to the address in the directory entry.
+*
+ReadFile0
+		CMP	#$01
+		BCS	?GOTDEST
+		LDX	CartDirectory+ROMDIR_DEST
+		LDY	CartDirectory+ROMDIR_DEST+1
+?GOTDEST
+		LDA	CartDirectory+ROMDIR_SIZE+1
+		INC	A
+		STA	CartIOCount+1
+		LDA	CartDirectory+ROMDIR_SIZE
+		INC	A
+		STA	CartIOCount
+		STX	sysptr
+		STY	sysptr+1
+*
+* readCart0Grunt - copy CartIOCount bytes from the cart to (sysptr)
+*
+readCart0Grunt
+		LDA	IODAT_RAM
+		AND	#\CART_ADDR_DATA
+		STA	IODAT_RAM
+		STA	IODAT
+		LDX	CartOffsetLow
+		SEC
+		LDA	CartOffsetHigh
+		SBC	#>ROMPAGESIZE
+		TAY
+?LOOP
+		DEC	CartIOCount
+		BEQ	?LOWDONE
+?READ
+		LDA	RCART_0
+		STA	(sysptr)
+		INC	sysptr
+		BEQ	?INCHI
+?NEXT
+		INX
+		BNE	?LOOP
+		INY
+		BNE	?LOOP
+		INC	CartPage
+		LDA	CartPage
+		JSR	SetCartPage
+		LDX	#$00
+		LDY	#-(>ROMPAGESIZE)
+		BRA	?LOOP
+?INCHI
+		INC	sysptr+1
+		BRA	?NEXT
+?LOWDONE
+		DEC	CartIOCount+1
+		BNE	?READ
+		STX	CartOffsetLow
+		CLC
+		TYA
+		ADC	#>ROMPAGESIZE
+		STA	CartOffsetHigh
+		LDX	sysptr
+		LDY	sysptr+1
+		JMP	RestoreReturn
+*
+* SetCartPage - A = ROM page; shifts it out to the cart address counter
+*
+SetCartPage
+		STA	?PAGE
+		LDA	IODAT_RAM
+		ORA	#$0A			;CART_ADDR_DATA + CART STROBE
+		TAY
+		AND	#\CART_ADDR_DATA
+		SEC
+		BRA	?SHIFT
+?BIT
+		BCC	?ZERO
+		STY	IODAT
+		CLC
+?ZERO
+		INX
+		STX	SYSCTL1
+?SHIFT
+		LDX	#$02
+		STX	SYSCTL1
+		ROL	?PAGE
+		STA	IODAT
+		BNE	?BIT
+		RTS
+?PAGE		.BYTE	$00
+*
+* GetDirAddress - A = file number; returns A/X/Y = page/offset of its
+* directory entry (ROM_HEADER_SIZE + 8*A)
+*
+GetDirAddress
+		STZ	?HI
+		ASL	A
+		ROL	?HI
+		ASL	A
+		ROL	?HI
+		ASL	A
+		ROL	?HI
+		ADC	#<ROM_HEADER_SIZE
+		TAX
+		LDA	?HI
+		ADC	#>ROM_HEADER_SIZE
+		PHA
+		AND	#>(ROMPAGESIZE-1)
+		TAY
+		PLA
+		LSR	A
+		LSR	A
+		RTS
+?HI		BLKB	1,$FF

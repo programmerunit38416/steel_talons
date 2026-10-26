@@ -1,0 +1,50 @@
+*
+* HSFX.VAR (reconstructed from the Steel Talons binary)
+*
+* Driver variables, linked into the code image (initial value $FF).
+*
+HSFXVarStart
+audio_interruptus BLKB	1,$FF
+audio_lockout    BLKB	1,$FF
+audio_dropout    BLKB	1,$FF
+top_of_loop0     BLKB	1,$FF
+top_of_loop1     BLKB	1,$FF
+ChannelInUse     BLKB	5,$FF
+freql            BLKB	4,$FF
+freqh            BLKB	4,$FF
+shiftl           BLKB	4,$FF
+shifth           BLKB	4,$FF
+feedbackl        BLKB	4,$FF
+feedbackh        BLKB	4,$FF
+volumel          BLKB	4,$FF
+volumeh          BLKB	4,$FF
+freq_interpl     BLKB	4,$FF
+freq_interph     BLKB	4,$FF
+shift_interpl    BLKB	4,$FF
+shift_interph    BLKB	4,$FF
+feed_interpl     BLKB	4,$FF
+feed_interph     BLKB	4,$FF
+vol_interpl      BLKB	4,$FF
+vol_interph      BLKB	4,$FF
+flagsl           BLKB	4,$FF
+flagsh           BLKB	4,$FF
+next_keyframel   BLKB	4,$FF
+next_keyframeh   BLKB	4,$FF
+current_framel   BLKB	4,$FF
+current_frameh   BLKB	4,$FF
+loop_count0      BLKB	4,$FF
+loop_adrl0       BLKB	4,$FF
+loop_adrh0       BLKB	4,$FF
+loop_count1      BLKB	4,$FF
+loop_adrl1       BLKB	4,$FF
+loop_adrh1       BLKB	4,$FF
+shift_flag       BLKB	4,$FF
+clock_temp       BLKB	4,$FF
+preload_temp     BLKB	4,$FF
+data_temp        BLKB	4,$FF
+shift_temp       BLKB	4,$FF
+integrate        BLKB	4,$FF
+hsfx_basel       BLKB	4,$FF
+hsfx_baseh       BLKB	4,$FF
+launch_channel   BLKB	4,$FF
+HSFXVarEnd

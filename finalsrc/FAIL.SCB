@@ -1,0 +1,14 @@
+FAIL.BBM
+ DB THREE_PER_PIXEL+NONCOLL_SPRITE	;Control 0
+ DB RELOAD_HVST				;Control 1
+ DB $00					;Control 2
+ DW $0000				;Next Sprite
+ DW FAIL.BBMDATA    			;ImageData
+ DW 80					;HPos
+ DW 51					;VPos
+ DW $0100				;HSize
+ DW $0100				;VSize
+ DW $0000				;Stretch
+ DW $0000				;Tilt
+	;Palette
+ DB $01,$34,$00,$00

@@ -1,0 +1,9 @@
+*
+* ZPAGE.MAC (reconstructed) - zero page allocation brackets
+*
+BEGIN_ZPAGE	MACRO
+MPAGE0		SECTION
+		ENDM
+END_ZPAGE	MACRO
+DEFS		SECTION
+		ENDM

@@ -1,0 +1,9 @@
+*
+* HMUSIC.MAC (reconstructed)
+*
+INITHMUSIC	MACRO
+		JSR	InitHMusic
+		ENDM
+PLAYMUSIC	MACRO
+		JSR	PlayMusic
+		ENDM

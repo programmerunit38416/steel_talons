@@ -1,0 +1,44 @@
+*
+* SPRITE.MAC (reconstructed from the Steel Talons binary)
+*
+INITSUZY	MACRO
+		LDA	#$F3
+		STA	SPRINIT
+		LDA	#$7F
+		STA	HSIZOFFL
+		STA	VSIZOFFL
+		LDA	#$01
+		STA	SUZYBUSEN
+		STZ	SDONEACK
+		ENDM
+*
+* SPRITES SCB,INDIRECT - draw a sprite list into the render buffer
+*	INDIRECT=0: SCB is the address of the first SCB
+*	INDIRECT=1: SCB is a word variable holding that address
+*
+SPRITES		MACRO	SCB,INDIRECT
+	IF	INDIRECT
+		LDA	SCB
+		STA	SCBNEXTL
+		LDA	SCB+1
+		STA	SCBNEXTH
+	ELSE
+		LDA	#<(SCB)
+		STA	SCBNEXTL
+		LDA	#>(SCB)
+		STA	SCBNEXTH
+	ENDIF
+		LDA	RenderBuffer
+		STA	VIDBASL
+		LDA	RenderBuffer+1
+		STA	VIDBASH
+		STZ	SDONEACK
+		LDA	#$01
+		STA	SPRGO
+?SPRW#
+		STZ	CPUSLEEP
+		LDA	SPRSYS
+		LSR	A
+		BCS	?SPRW#
+		STZ	SDONEACK
+		ENDM

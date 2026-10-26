@@ -1,0 +1,49 @@
+*
+* HMUSIC.VAR (reconstructed from the Steel Talons binary)
+*
+* Driver variables, linked into the code image (initial value $FF).
+*
+HMusicVarStart
+HSFXVarEnd
+VoiceInUse       BLKB	4,$FF
+instance         BLKB	1,$FF
+VoiceInstance    BLKB	4,$FF
+restore_ds       BLKB	4,$FF
+save_decayl      BLKB	4,$FF
+save_decayh      BLKB	4,$FF
+save_sustainl    BLKB	4,$FF
+save_sustainh    BLKB	4,$FF
+voice_freq_ptrl  BLKB	4,$FF
+voice_freq_ptrh  BLKB	4,$FF
+voice_dur_ptrl   BLKB	4,$FF
+voice_dur_ptrh   BLKB	4,$FF
+gatel            BLKB	4,$FF
+gateh            BLKB	4,$FF
+voicedata_ptrl   BLKB	4,$FF
+voicedata_ptrh   BLKB	4,$FF
+frames_alivel    BLKB	4,$FF
+frames_aliveh    BLKB	4,$FF
+voice_endframel  BLKB	4,$FF
+voice_endframeh  BLKB	4,$FF
+hmflagsl         BLKB	1,$FF
+hmflagsh         BLKB	1,$FF
+gating           BLKB	4,$FF
+new_note         BLKB	4,$FF
+SFX_to_cancel    BLKB	4,$FF
+did_outernext    BLKB	1,$FF
+did_innernext    BLKB	1,$FF
+did_ring_end     BLKB	1,$FF
+mloop_count0     BLKB	4,$FF
+mloop_adrl0      BLKB	4,$FF
+mloop_adrh0      BLKB	4,$FF
+mloop_count1     BLKB	4,$FF
+mloop_adrl1      BLKB	4,$FF
+mloop_adrh1      BLKB	4,$FF
+ring_flag        BLKB	4,$FF
+ring0_returnl    BLKB	4,$FF
+ring0_returnh    BLKB	4,$FF
+ring1_returnl    BLKB	4,$FF
+ring1_returnh    BLKB	4,$FF
+hmusic_base      BLKB	2,$FF
+VoiceHSFXChannel BLKB	4,$FF
+HMusicVarEnd

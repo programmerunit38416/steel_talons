@@ -1,0 +1,20 @@
+*
+* CART.MAC (reconstructed from the Steel Talons binary)
+*
+GETDIR		MACRO
+		JSR	GetDirAddress
+		ENDM
+OPENFILE	MACRO
+		JSR	OpenFile0
+		ENDM
+READFILE	MACRO
+		JSR	ReadFile0
+		ENDM
+*
+* These generate no code in the shipped binary (TALONS.BIN matches with
+* them empty); the originals probably only mattered for cart bank 1.
+*
+SET_TO_READ_CART MACRO
+		ENDM
+RESTORE_CART	MACRO
+		ENDM

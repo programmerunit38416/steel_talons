@@ -1,0 +1,69 @@
+*
+* DISPLAY.MAC (reconstructed from the Steel Talons binary)
+*
+DISPLAY		MACRO
+		LDA	DISPCTL_RAM
+		STA	DISPCTL
+		AND	#DISP_FLIP
+		BEQ	?DSP1#
+		LDA	DisplayBuffer
+		CLC
+		ADC	#<(DISPLAY_BUFSIZE-1)
+		TAX
+		LDA	DisplayBuffer+1
+		ADC	#>(DISPLAY_BUFSIZE-1)
+		BRA	?DSP2#
+?DSP1#
+		LDX	DisplayBuffer
+		LDA	DisplayBuffer+1
+?DSP2#
+		PHP
+		SEI
+		STX	DISPADRL
+		STA	DISPADRH
+		PLP
+		ENDM
+*
+SETDBUF		MACRO	BUF1,BUF2
+		LDA	#<BUF1
+		STA	RenderBuffer
+		LDA	#>BUF1
+		STA	RenderBuffer+1
+		LDA	#<BUF2
+		STA	DisplayBuffer
+		LDA	#>BUF2
+		STA	DisplayBuffer+1
+		STZ	DisplayFlags
+		ENDM
+*
+DBUF_DISPLAY	MACRO
+		PHP
+		SEI
+		LDA	RenderBuffer
+		LDX	DisplayBuffer
+		STA	DisplayBuffer
+		STX	RenderBuffer
+		LDA	RenderBuffer+1
+		LDX	DisplayBuffer+1
+		STA	DisplayBuffer+1
+		STX	RenderBuffer+1
+		PLP
+		ENDM
+*
+FLIP		MACRO
+		LDA	DISPCTL_RAM
+		EOR	#DISP_FLIP
+		STA	DISPCTL_RAM
+		LDA	SPRSYS_RAM
+		EOR	#$08
+		STA	SPRSYS_RAM
+		STA	SPRSYS
+		ENDM
+*
+HOFF8		MACRO
+		STA	HOFFL
+		ENDM
+*
+VOFF8		MACRO
+		STA	VOFFL
+		ENDM

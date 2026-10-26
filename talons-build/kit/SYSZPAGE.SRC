@@ -1,0 +1,8 @@
+*
+* SYSZPAGE.SRC (reconstructed) - system zero page variables
+*
+		BEGIN_ZPAGE
+sysptr		DS	2
+sysptr2		DS	2
+sysptr3		DS	2
+		END_ZPAGE

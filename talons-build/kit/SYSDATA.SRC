@@ -1,0 +1,15 @@
+*
+* SYSDATA.SRC (reconstructed from the Steel Talons binary)
+*
+* System variables.  They live in the code image, so their initial value
+* is whatever the linker wrote there ($FF).
+*
+SPRSYS_RAM	BLKB	1,$FF		;SHADOW OF SPRSYS
+DISPCTL_RAM	BLKB	1,$FF		;SHADOW OF DISPCTL
+IODAT_RAM	BLKB	1,$FF		;SHADOW OF IODAT
+IODIR_RAM	BLKB	1,$FF		;SHADOW OF IODIR
+RenderBuffer	BLKB	2,$FF		;BUFFER SPRITES ARE DRAWN INTO
+DisplayBuffer	BLKB	2,$FF		;BUFFER BEING DISPLAYED
+INTSET_RAM	BLKB	1,$FF		;PENDING INTERRUPTS (DISPATCHER)
+TimeoutCount	BLKB	3,$FF		;AUTO POWER-OFF COUNTERS
+DisplayFlags	BLKB	1,$FF		;BIT 7 = DISPLAY_EOFFLAG

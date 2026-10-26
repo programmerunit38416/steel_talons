@@ -1,0 +1,10 @@
+*
+* FILE - MA.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	MA.PAL
+	INCLUDE	MA.HCR
+*
+* END MA.ASM
+*
+

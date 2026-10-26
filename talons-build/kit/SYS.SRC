@@ -1,0 +1,30 @@
+*
+* SYS.SRC (reconstructed from the Steel Talons binary)
+*
+* Interrupt dispatcher.  The hardware IRQ vector points at UserIntHandler;
+* each pending Mikey interrupt bit (0-7) is dispatched through the 8-entry
+* vector table installed by INITINT (entries default to IntReturn).
+*
+		.BYTE	$43
+UserIntHandler
+		PHA
+		PHX
+hardInt
+		LDA	INTSET
+		STA	INTSET_RAM
+		LDX	#$00
+		LDA	#$01
+?NEXTBIT
+		BIT	INTSET_RAM
+		BNE	jumpIntTable
+		INX
+		INX
+		ASL	A
+		BNE	?NEXTBIT
+IntReturn
+		PLX
+		PLA
+		RTI
+jumpIntTable
+		STA	INTRST
+		JMP	(sysIntTable,X)
