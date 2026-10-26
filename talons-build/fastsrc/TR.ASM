@@ -1,0 +1,10 @@
+*
+* FILE - TR.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	TR.PAL
+	INCLUDE	TR.HCR
+*
+* END TR.ASM
+*
+

@@ -1,0 +1,111 @@
+
+
+	Atari Lynx Steel Talons
+	Control Summary
+	Date:04/30/92
+
+o Updates:
+
+	o Player should not explode twice when continually getting shot.
+
+	o Targetting system should now switch to lock on to closer target
+	  if one enters into view.
+
+	o Enemy Helicoptors (and jets) will now fly above all hills.
+
+	o Enemy bullet firing should be more accurate (accuracy adjustment).
+
+o Check out the final win sequence (when you survive all missions).
+
+o Pass,Ace times per mission
+
+	o Training     1:10   1:00
+	o Mission 1    1:20   1:00
+	o Mission 2    2:30   1:50
+	o Mission 3    1:10   1:00
+	o Mission 4    2:15   1:40
+	o Mission 5    2:20   1:45
+	o Mission 6    2:30   1:50
+	o Mission 7    3:10   2:25
+	o Mission 8    1:15   1:05
+	o Mission 9    2:50   2:15
+	o Mission 10   3:00   2:20
+	o Mission 11   3:10   2:25
+	o Mission 12   3:10   2:25
+
+o Title Screen, Credits Screen, and High Score Screen (cycles every 5 seconds):
+
+	o Pause: Pause game.
+
+	o Pause+Option1: Restart game.
+
+	o Pause+Option2: Flip.
+
+	o A or B buttons: Go to Mission Select screens.
+
+
+o Mission Select screens (timeout after 15 seconds--60 after 1st mission):
+
+	o Pause: Pause game.
+
+	o Pause+Option1: Restart game.
+
+	o Pause+Option2: Flip.
+
+	o A or B buttons: Start mission.
+
+	o Up or Right on Joypad: Increase mission number.
+
+	o Down or Left on Joypad: Decrease mission number.
+
+
+o Game screen:
+	
+	o Pause: Pause game.
+
+	o Pause+Option1: Restart game.
+
+	o Pause+Option2: Flip.
+
+	o A button:
+		o Fire machine guns: Coin-op fire button 1.
+
+	o B button pressed:
+
+		o Option 1:
+			o Zoom in and out: Coin-op zoom button.
+		o Option 2:
+			o Fire rockets: not on Coin-op.
+		o Left on Joypad:
+			o Turn facing to the left: Coin-op left foot pedal.
+		o Right on Joypad:
+			oTurn facing to the right: Coin-op right foot pedal.
+		o Up on Joypad:
+			o Increase altitude: Coin-op altitude lever up.
+		o Down on Joypad:
+			o Decrease altitude: Coin-op altitude lever down.
+
+	o B button not pressed:
+
+		o Option 1:
+			o Bring up map screen.
+		o Option 2:
+			o Fire missiles: Coin-op fire button 2.
+		o Left on Joypad:
+			o Bank to the left: Coin-op joystick left.
+		o Right on Joypad:
+			o Bank to the right: Coin-op joystick right.
+		o Up on Joypad:
+			o Increase forward speed: Coin-op joystick forward.
+		o Down on Joypad:
+			o Decrease forward speed: Coin-op joystick back.
+
+	o Note: Speed is auto centering to zero when going slow enough.
+
+
+o Map screen (for as long as Option1 remains pressed):
+	
+	o Pause+Option1: Restart game.
+
+	o A or B button (for as long as A or B button remain pressed):
+		o Show locked target if any: Coin-op TV Close up.

@@ -1,0 +1,10 @@
+*
+* FILE - M6.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	M6.PAL
+	INCLUDE	M6.HCR
+*
+* END M6.ASM
+*
+

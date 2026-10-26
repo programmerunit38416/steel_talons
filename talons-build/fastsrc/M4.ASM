@@ -1,0 +1,9 @@
+*
+* FILE - M4.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	M4.PAL
+	INCLUDE	M4.HCR
+*
+* END M4.ASM
+*

@@ -1,0 +1,8 @@
+@ECHO OFF
+ECHO Updating %1.OBJ...
+IF EXIST %1.OBJ DEL %1.OBJ
+X6502 -Q %1.ASM
+ECHO Updating %1.BIN...
+XLINK -Q -C %1.OBJ -O%1.BIN -X
+IF EXIST %1.OBJ DEL %1.OBJ
+
