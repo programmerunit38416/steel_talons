@@ -200,34 +200,10 @@ CALCX3@
 		BCS	?2			;
 		DEC	A			;
 ?2
-		STA	MATHA			;
-		WAITMATH			;
+		STA	MATHA			;START
 
-	IF	FALSE
-
-		MOVEL	MATHH,DIVIDEND		;
-
-		LDA	WY2+0			;CALC (WY2 - WY1)
-		SEC				;
-		SBC	WY1+0			;
-		STA	DIVISOR+0		;
-		STZ	DIVISOR+1		;
-		BCS	?3			;
-		DEC	DIVISOR+1		;
-?3
-		JSR	SDIVIDE			;SIGNED DIVIDE
-
-		LDA	WX1+0			;ADD IN WX1
-		CLC				;
-		ADC	QUOTIENT+0		;
-		STA	X3+0			;
-
-		RTS
-
-	ELSE
-
-		LDA	WY2+0			;CALC (WY2 - WY1)
-		SEC				;
+		LDA	WY2+0			;RECIPROCAL OF (WY2 - WY1)
+		SEC				;	WHILE IT RUNS
 		SBC	WY1+0			;
 		BCS	?3			;
 
@@ -237,51 +213,51 @@ CALCX3@
 		CPX	#2			;
 		BGE	?21			;
 
+		WAITMATH			;
 		LDA	WX1+0			;ADD IN WX1
 		SEC				;
 		SBC	MATHH			;
 		STA	X3+0			;
-
 		RTS				;
 ?21
 		LDA	RECIPTABLELO,X		;
 		EOR	#$FF			;
 		CLC				;
 		ADC	#$01			;
-		STA	MATHD			;
+		PHA				;
 		LDA	RECIPTABLEHI,X		;
 		EOR	#$FF			;
 		ADC	#$00			;
-		STA	MATHC			;
+		TAY				;
+		PLX				;
 		BRA	?4			;
 ?3
 		TAX				;UNSIGNED DIVISOR
 		CPX	#2			;
 		BGE	?31			;
 
+		WAITMATH			;
 		LDA	WX1+0			;ADD IN WX1
 		CLC				;
 		ADC	MATHH			;
 		STA	X3+0			;
-
 		RTS				;
 ?31
+		LDY	RECIPTABLEHI,X		;
 		LDA	RECIPTABLELO,X		;
-		STA	MATHD			;
-		LDA	RECIPTABLEHI,X		;
-		STA	MATHC			;
+		TAX				;
 ?4
-		MOVEW	MATHH,MATHB		;
 		WAITMATH			;
-
-		LDA	WX1+0			;ADD IN WX1
+		STX	MATHD			;
+		STY	MATHC			;
+		MOVEW	MATHH,MATHB		;START
+		LDA	WX1+0			;ADD IN WX1 (WHILE IT RUNS)
 		CLC				;
+		WAITMATH			;
 		ADC	MATHF			;
 		STA	X3+0			;
 
-		RTS				;
-
-	ENDIF
+		RTS
 *
 * CALC X4
 *
@@ -306,34 +282,10 @@ CALCX4@
 		BCS	?2			;
 		DEC	A			;
 ?2
-		STA	MATHA			;
-		WAITMATH			;
+		STA	MATHA			;START
 
-	IF	FALSE
-
-		MOVEL	MATHH,DIVIDEND		;
-
-		LDA	WY4+0			;CALC (WY4 - WY3)
-		SEC				;
-		SBC	WY3+0			;
-		STA	DIVISOR+0		;
-		STZ	DIVISOR+1		;
-		BCS	?3			;
-		DEC	DIVISOR+1		;
-?3
-		JSR	SDIVIDE			;SIGNED DIVIDE
-
-		LDA	WX3+0			;ADD IN WX3
-		CLC				;
-		ADC	QUOTIENT+0		;
-		STA	X4+0			;
-
-		RTS
-
-	ELSE
-
-		LDA	WY4+0			;CALC (WY4 - WY3)
-		SEC				;
+		LDA	WY4+0			;RECIPROCAL OF (WY4 - WY3)
+		SEC				;	WHILE IT RUNS
 		SBC	WY3+0			;
 		BCS	?3			;
 
@@ -343,51 +295,51 @@ CALCX4@
 		CPX	#2			;
 		BGE	?21			;
 
+		WAITMATH			;
 		LDA	WX3+0			;ADD IN WX3
 		SEC				;
 		SBC	MATHH			;
 		STA	X4+0			;
-
 		RTS				;
 ?21
 		LDA	RECIPTABLELO,X		;
 		EOR	#$FF			;
 		CLC				;
 		ADC	#$01			;
-		STA	MATHD			;
+		PHA				;
 		LDA	RECIPTABLEHI,X		;
 		EOR	#$FF			;
 		ADC	#$00			;
-		STA	MATHC			;
+		TAY				;
+		PLX				;
 		BRA	?4			;
 ?3
 		TAX				;UNSIGNED DIVISOR
 		CPX	#2			;
 		BGE	?31			;
 
+		WAITMATH			;
 		LDA	WX3+0			;ADD IN WX3
 		CLC				;
 		ADC	MATHH			;
 		STA	X4+0			;
-
 		RTS				;
 ?31
+		LDY	RECIPTABLEHI,X		;
 		LDA	RECIPTABLELO,X		;
-		STA	MATHD			;
-		LDA	RECIPTABLEHI,X		;
-		STA	MATHC			;
+		TAX				;
 ?4
-		MOVEW	MATHH,MATHB		;
 		WAITMATH			;
-
-		LDA	WX3+0			;ADD IN WX3
+		STX	MATHD			;
+		STY	MATHC			;
+		MOVEW	MATHH,MATHB		;START
+		LDA	WX3+0			;ADD IN WX3 (WHILE IT RUNS)
 		CLC				;
+		WAITMATH			;
 		ADC	MATHF			;
 		STA	X4+0			;
 
-		RTS				;
-
-	ENDIF
+		RTS
 *
 * INITIALIZE SPRITES (DO ONCE AT START OF PROGRAM)
 *
