@@ -1,0 +1,10 @@
+*
+* FILE - MB.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	MB.PAL
+	INCLUDE	MB.HCR
+*
+* END MB.ASM
+*
+

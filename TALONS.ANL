@@ -1,0 +1,436 @@
+ 1964 symbols loaded.
+ANALYZING...(Press ESCape to quit)
+  25:VIEWZ                           :  161    2.75%
+1140:COMMONAREA                      :   10    0.17%
+                                                        171    2.92%
+20CD:STARTPGM@                       :    0    0.00%
+                                                          0    0.00%
+20D0:STARTUPCONT@                    :    0    0.00%
+                                                          0    0.00%
+20D3:RESTART@                        :    0    0.00%
+                                                          0    0.00%
+20D6:RESTARTCONT@                    :    0    0.00%
+                                                          0    0.00%
+20FB:MAINLOOP@                       :    0    0.00%
+                                                          0    0.00%
+2189:SYSTEMAREA@                     :    0    0.00%
+218A:UserIntHandler                  :    7    0.11%
+218C:hardInt                         :   54    0.92%
+21A3:jumpIntTable                    :    6    0.10%
+21F0:SetCartOffset                   :   17    0.29%
+222B:readCart0Grunt                  :   13    0.22%
+227D:SetCartPage                     :    3    0.05%
+                                                        100    1.70%
+2ED8:CHECKCOLL@                      :    2    0.03%
+2EE4:CHECKCOLLLOOP                   :  155    2.64%
+2F1B:NOTARING                        :   33    0.56%
+2F32:NOTAHILL                        :   19    0.32%
+2F49:NOTACLIFF                       :   25    0.42%
+2F68:NOTAPINNAC                      :   14    0.23%
+2F7C:NOTAMESA1                       :   20    0.34%
+2F90:NOTAMESA2                       :   21    0.35%
+2FD2:CHECKCOLLNEXT                   :   64    1.09%
+                                                        353    6.03%
+2FE2:MESA2COLLIDE@                   :    0    0.00%
+                                                          0    0.00%
+2FFD:MESA1COLLIDE@                   :    0    0.00%
+                                                          0    0.00%
+3087:PINNACCOLLIDE@                  :    0    0.00%
+                                                          0    0.00%
+3117:RINGCOLLIDE@                    :    0    0.00%
+                                                          0    0.00%
+320F:CLIFFCOLLIDE@                   :    0    0.00%
+                                                          0    0.00%
+329F:HILLCOLLIDE@                    :    7    0.11%
+32A5:HILLCOLLIDECONT                 :    7    0.11%
+3380:NOTQUAD45                       :    2    0.03%
+33D6:YESQUAD0                        :    1    0.01%
+33E8:GOTQUAD                         :    1    0.01%
+                                                         18    0.30%
+345E:CALCDIST@                       :  100    1.70%
+                                                        100    1.70%
+34F9:TARGETCOLLIDE@                  :   42    0.71%
+3664:MISSEDTARGET                    :    1    0.01%
+                                                         43    0.73%
+3666:ADDTENS@                        :    0    0.00%
+                                                          0    0.00%
+3682:ADDHUNDREDS@                    :    0    0.00%
+                                                          0    0.00%
+369E:CHECKSCORE@                     :    0    0.00%
+                                                          0    0.00%
+36BD:SCORETENS@                      :    0    0.00%
+                                                          0    0.00%
+36C7:SCOREHUNDREDS@                  :    0    0.00%
+                                                          0    0.00%
+36D1:CHECKXSCORE@                    :    0    0.00%
+                                                          0    0.00%
+3763:CALCXYZ@                        :   16    0.27%
+                                                         16    0.27%
+3794:CALCSCOREXY@                    :    0    0.00%
+                                                          0    0.00%
+37F8:HIDETARGET@                     :    0    0.00%
+                                                          0    0.00%
+3924:INITINTS@                       :    0    0.00%
+                                                          0    0.00%
+393B:VBL_INT@                        :   10    0.17%
+39BA:VBL_DONE                        :    4    0.06%
+                                                         14    0.23%
+39C0:STARTUPINIT@                    :    0    0.00%
+3AEF:FIRSTSPRITES                    :  221    3.77%
+                                                        221    3.77%
+3B1C:RESTARTINIT@                    :    0    0.00%
+                                                          0    0.00%
+3CFC:INITPOS@                        :    0    0.00%
+                                                          0    0.00%
+3D04:INITPOS2@                       :    0    0.00%
+                                                          0    0.00%
+3DE4:INITNEWPOS@                     :    0    0.00%
+                                                          0    0.00%
+3E7D:READDATABASE@                   :    0    0.00%
+                                                          0    0.00%
+3FF1:FADEBLACK@                      :    8    0.13%
+                                                          8    0.13%
+402B:CLS@                            :    0    0.00%
+                                                          0    0.00%
+41AE:GETJOY@                         :    0    0.00%
+                                                          0    0.00%
+41DF:IGETJOY@                        :    9    0.15%
+                                                          9    0.15%
+4210:SPECIALINPUT@                   :    2    0.03%
+4225:NOTRESTART1                     :    2    0.03%
+423A:NOTRESTART2                     :    1    0.01%
+4246:NOTOPTION1                      :    3    0.05%
+425E:NOTABUTTON                      :    1    0.01%
+4273:NOTFLIP1                        :    1    0.01%
+4288:NOTFLIP2                        :    1    0.01%
+4294:NOTPAUSED                       :    2    0.03%
+                                                         13    0.22%
+4295:CLIP3D@                         :   59    1.00%
+42C6:CLIPX1_3D                       :    3    0.05%
+436C:OKAYX1_3D                       :   40    0.68%
+437F:CLIPX2_3D                       :    3    0.05%
+                                                        105    1.79%
+4425:CLIP2DX@                        :   22    0.37%
+4453:X1NOTLEFT1                      :   17    0.29%
+445F:X1ISRIGHT2                      :    7    0.11%
+446F:X2ISRIGHT2                      :    1    0.01%
+4472:X2NOTRIGHT2                     :    1    0.01%
+4482:X1NOTRIGHT2                     :    2    0.03%
+448C:X2NOTLEFT3                      :   18    0.30%
+449E:X2NOTRIGHT3                     :    6    0.10%
+44A1:CLIPX2LEFT                      :    4    0.06%
+44FA:CLIPX2RIGHT                     :    1    0.01%
+4557:CLIPX1LEFT                      :    3    0.05%
+45B0:CLIPX1RIGHT                     :    5    0.08%
+                                                         87    1.48%
+460D:CLIP2DY@                        :   34    0.58%
+4620:Y2ISTOP1                        :    2    0.03%
+4623:Y2NOTTOP1                       :    1    0.01%
+463B:Y1NOTTOP1                       :   15    0.25%
+466A:Y1NOTBOTTOM2                    :   10    0.17%
+466E:Y2ISTOP3                        :    2    0.03%
+4674:Y2NOTTOP3                       :   17    0.29%
+4686:Y2NOTBOTTOM3                    :   11    0.18%
+46E2:CLIPY2BOTTOM                    :    1    0.01%
+473F:CLIPY1TOP                       :    1    0.01%
+4798:CLIPY1BOTTOM                    :    1    0.01%
+                                                         95    1.62%
+47F5:DRAWOBJECTS@                    :    0    0.00%
+4834:DRAWOBJECTSLOOP                 :    6    0.10%
+483F:DRAWOBJECTSCONT                 :    6    0.10%
+487E:DONECHECKSELF                   :   22    0.37%
+48D3:ITSGROUND1                      :   11    0.18%
+4919:DRAWOBJECTSDONE                 :    1    0.01%
+                                                         46    0.78%
+4973:SHOWEXPLODE@                    :    0    0.00%
+                                                          0    0.00%
+4AA3:CHECKTARGET@                    :    3    0.05%
+                                                          3    0.05%
+4B97:DRAWPOLYGONS@                   :    6    0.10%
+4B9A:DRAWPOLYGONSLOOP                :   19    0.32%
+4BAB:DRAWPOLYGONSCONT                :   34    0.58%
+4BD3:READPNTSLOOP                    :   53    0.90%
+4BE1:READPNTSDONE                    :   28    0.47%
+4C01:NORMALOK                        :    9    0.15%
+4C1B:FIXPOINTSLOOP                   :    8    0.13%
+4C23:FIXPOINTSCONT                   :   32    0.54%
+4C33:POINTOK                         :   29    0.49%
+4C5A:DONEHIDDENCHECK                 :    9    0.15%
+4C68:FIXPOINTSDONE                   :   20    0.34%
+4CA9:DONESHADED                      :    6    0.10%
+4CAC:SKIPPOLY                        :    7    0.11%
+                                                        260    4.44%
+4D86:CHECKHIDDEN@                    :   23    0.39%
+4DA4:NEEDX                           :   21    0.35%
+4DBE:SKIPXPART                       :    5    0.08%
+4DCB:NEEDY                           :   19    0.32%
+4DE5:SKIPYPART                       :    7    0.11%
+4DF2:NEEDZ                           :   25    0.42%
+4E0C:SKIPZPART                       :   24    0.41%
+4E29:NOTHIDDEN                       :    3    0.05%
+                                                        127    2.17%
+4E2B:FIXPOINT@                       :  320    5.46%
+4EEE:SKIPPROJECTION                  :    8    0.13%
+                                                        328    5.60%
+4EEF:FIXNORMAL@                      :  131    2.23%
+                                                        131    2.23%
+4F8C:READOBJFILE@                    :   15    0.25%
+4FF2:INITPOINTUSELOOP                :   15    0.25%
+501F:INITNORMALUSELOOP               :   18    0.30%
+                                                         48    0.82%
+5099:SORTOBJECTS@                    :    0    0.00%
+511A:SORTOBJECTSLOOP                 :   14    0.23%
+5123:SORTOBJECTSCONT                 :   92    1.57%
+518A:SKIPVIEWZROT2                   :   21    0.35%
+51F8:NOTINERADAR                     :   38    0.64%
+52C1:SKIPCALCDIST                    :    3    0.05%
+52D6:SORTOBJECTSNEXT                 :   22    0.37%
+52F8:SORTBUFFLOOP                    :   29    0.49%
+5329:SORTBUFFSWAP                    :   31    0.52%
+5344:SORTBUFFNEXT                    :    6    0.10%
+                                                        256    4.37%
+5359:ANIMOBJECTS@                    :    0    0.00%
+537D:ANIMOBJLOOP                     :   16    0.27%
+5388:ANIMOBJCONT1                    :    5    0.08%
+5392:ANIMOBJCONT2                    :    8    0.13%
+53BE:NOANIMEXPLODE                   :   12    0.20%
+53DE:NOTSBLACKHA                     :    9    0.15%
+53ED:SHOWASTREE                      :    3    0.05%
+5402:NOTTREE1                        :    7    0.11%
+541B:NOTBUSH1                        :    4    0.06%
+542C:NOTSJET1                        :    3    0.05%
+5440:NOTSCHOPPER                     :    5    0.08%
+544A:NOTBULLET                       :    4    0.06%
+5454:NOTROCKET                       :    8    0.13%
+545E:NOTMISSILE                      :    5    0.08%
+546C:NOTJEEPTRUCK                    :    7    0.11%
+5476:NOTASCUD                        :    7    0.11%
+5487:ANIMOBJNEXT                     :   28    0.47%
+54E9:TURNTOUS                        :    2    0.03%
+5642:MOVECHOPPER                     :    1    0.01%
+57FE:MOVEENEMY                       :    6    0.10%
+5884:SEEKALT                         :    1    0.01%
+5942:UPDATECSHADOW                   :    2    0.03%
+595E:UPDATESHADOW                    :    3    0.05%
+59CD:UPDATEROTORS                    :    4    0.06%
+5A9C:MOVEBULLETCONT1                 :    6    0.10%
+                                                        156    2.66%
+5D09:MODIFYZROT@                     :    0    0.00%
+                                                          0    0.00%
+5DBB:MISSILECHECK@                   :    3    0.05%
+                                                          3    0.05%
+5E7E:DRAWONEPOLY@                    :   16    0.27%
+5E9B:PREPONEPOLYLOOP                 :   22    0.37%
+5EA3:PREPONEPOLYCONT                 :   95    1.62%
+5EE9:NOTLASTRP                       :   94    1.60%
+5F2C:TRYADDLINE                      :    6    0.10%
+5F4A:ONECLIPPED1                     :    1    0.01%
+5F9C:TWOCLIPPED1                     :    1    0.01%
+6023:ADDTHELINE                      :   58    0.99%
+6046:SKIPADDLINE                     :   44    0.75%
+6056:PREPONEPOLYDONE                 :    8    0.13%
+607E:NOLASTLINEX                     :    2    0.03%
+60A2:GOTLINES                        :    4    0.06%
+60AF:SORTLOOP                        :   32    0.54%
+60D1:SORTSWAP                        :   12    0.20%
+60E6:SORTNEXT                        :   10    0.17%
+                                                        405    6.92%
+60F4:ADDLINE2DX@                     :   33    0.56%
+610A:NOTBOTHBAD2DX                   :   44    0.75%
+6129:ONEWASBAD2DX                    :    5    0.08%
+6180:SAVE12DX                        :    2    0.03%
+61F7:SAVE22DX                        :    1    0.01%
+620E:DONE22DX                        :    6    0.10%
+                                                         91    1.55%
+6234:ADDLINE2DY@                     :   25    0.42%
+624E:NOTBOTHBAD2DY                   :   32    0.54%
+6265:ONEWASBAD2DY                    :    3    0.05%
+630C:SAVE22DY                        :    1    0.01%
+631E:DONE22DY                        :    4    0.06%
+                                                         65    1.11%
+633C:ADDTHISLINE@                    :   27    0.46%
+635C:GOODORDER                       :   18    0.30%
+6370:INCTHECOUNT                     :   38    0.64%
+                                                         83    1.41%
+6393:GETCOSSIN1@                     :    7    0.11%
+63A6:SKIPGCXROT1                     :    3    0.05%
+63B9:SKIPGCYROT1                     :    8    0.13%
+63CC:SKIPGCZROT1                     :    6    0.10%
+63CD:GETCOSSINX1                     :    2    0.03%
+6467:GETCOSSINY1                     :    6    0.10%
+6501:GETCOSSINZ1                     :   48    0.82%
+                                                         80    1.36%
+659B:GETCOSSIN2@                     :    0    0.00%
+665C:GETCOSSINY2                     :    1    0.01%
+                                                          1    0.01%
+66F6:GETCOSSINV@                     :    0    0.00%
+6864:GETCOSSINZV                     :    2    0.03%
+                                                          2    0.03%
+68FE:ROTATEX1@                       :   65    1.11%
+                                                         65    1.11%
+6A18:ROTATEY1@                       :  135    2.30%
+                                                        135    2.30%
+6B32:ROTATEZ1@                       :  434    7.41%
+                                                        434    7.41%
+6C4C:ROTATEX2@                       :    0    0.00%
+                                                          0    0.00%
+6CA7:ROTATEY2@                       :   78    1.33%
+                                                         78    1.33%
+6D02:ROTATEXV@                       :   22    0.37%
+                                                         22    0.37%
+6E1C:ROTATEYV@                       :   20    0.34%
+                                                         20    0.34%
+6F36:ROTATEZV@                       :  651   11.12%
+                                                        651   11.12%
+7050:GETATAN@                        :    0    0.00%
+7058:FINDDZLOOP                      :    2    0.03%
+706C:INCINDEX                        :    2    0.03%
+                                                          4    0.06%
+7081:CALCYAW@                        :    6    0.10%
+7157:YAWDONE                         :    1    0.01%
+                                                          7    0.11%
+7173:GETYP@                          :    1    0.01%
+                                                          1    0.01%
+7293:SGETSCREENXYS@                  :    6    0.10%
+7293:SGETSCREENXYSX1                 :   63    1.07%
+72D2:SGETSCREENXYSX2                 :   56    0.95%
+72D7:SGETSCREENXYSX3                 :   50    0.85%
+7311:SGETSCREENXYSY1                 :   48    0.82%
+7346:SGETSCREENXYSY2                 :   55    0.93%
+734B:SGETSCREENXYSY3                 :   57    0.97%
+                                                        335    5.72%
+7386:GETSCREENXY1@                   :    4    0.06%
+                                                          4    0.06%
+7479:GETSCREENXY2@                   :    6    0.10%
+                                                          6    0.10%
+756C:DRAWSPRPOLY@                    :    9    0.15%
+7588:DRAWSPRPOLYLOOP                 :   26    0.44%
+75A0:NOTREADY                        :   28    0.47%
+75BE:USETHISLINE                     :   30    0.51%
+75DE:GETFIRSTLINE                    :   16    0.27%
+75F5:NEXTLINE                        :   16    0.27%
+75FE:DRAWSPRPOLYDONE                 :    3    0.05%
+760F:DRAWLASTPOLY                    :    5    0.08%
+7615:NOMOREPOLYS                     :    4    0.06%
+                                                        137    2.34%
+762B:GETPOINTS@                      :   35    0.59%
+768C:CHECKXORDER                     :    9    0.15%
+                                                         44    0.75%
+76A9:CALCX3@                         :    1    0.01%
+                                                          1    0.01%
+7731:CALCX4@                         :   20    0.34%
+                                                         20    0.34%
+77B9:INITSPRS@                       :    0    0.00%
+77CB:INITSPRSLOOP                    :    1    0.01%
+                                                          1    0.01%
+7812:DRAWPGRAM@                      :   36    0.61%
+7837:NOTHLINE                        :   16    0.27%
+                                                         52    0.88%
+7855:DRAWUTRIANGLE@                  :   38    0.64%
+                                                         38    0.64%
+78F8:DRAWTRIANGLE@                   :   90    1.53%
+                                                         90    1.53%
+7999:DRAWHLINE@                      :    7    0.11%
+                                                          7    0.11%
+79D4:LINKNEXT@                       :   29    0.49%
+                                                         29    0.49%
+7A02:SDIVIDE@                        :   32    0.54%
+                                                         32    0.54%
+7AC9:UDIVIDE@                        :    0    0.00%
+                                                          0    0.00%
+7B18:SMULTIPLY@                      :    0    0.00%
+                                                          0    0.00%
+7B5E:STARTSOUND@                     :    0    0.00%
+                                                          0    0.00%
+7B6D:STARTGUN@                       :    0    0.00%
+                                                          0    0.00%
+7B7E:STOPGUN@                        :    0    0.00%
+                                                          0    0.00%
+7B88:STARTERADARS@                   :    0    0.00%
+                                                          0    0.00%
+7B99:STOPERADARS@                    :    0    0.00%
+                                                          0    0.00%
+7BA3:STOPROTORS@                     :    0    0.00%
+                                                          0    0.00%
+7E63:DOSHOWMAP@                      :    0    0.00%
+                                                          0    0.00%
+7E8B:CHECKCRASH@                     :    0    0.00%
+                                                          0    0.00%
+7F26:HIDEPARTS@                      :    0    0.00%
+                                                          0    0.00%
+7F3F:UPDTIMER@                       :    0    0.00%
+                                                          0    0.00%
+7FCF:CHECKPAUSED@                    :    0    0.00%
+                                                          0    0.00%
+7FCF:SELCHECKPAUSED@                 :    0    0.00%
+8082:PRINTDEC                        :    1    0.01%
+8093:PRINTDECLOOP                    :    4    0.06%
+8123:PRINTITLOOP                     :    1    0.01%
+                                                          6    0.10%
+8147:HIDEMESSAGES@                   :    0    0.00%
+                                                          0    0.00%
+814E:SHOWPAUSED@                     :    0    0.00%
+                                                          0    0.00%
+8171:HIDEPAUSED@                     :    0    0.00%
+                                                          0    0.00%
+817A:SETERADAR@                      :    1    0.01%
+                                                          1    0.01%
+81A9:HIDEERADAR@                     :    0    0.00%
+                                                          0    0.00%
+81B5:CHECKOTHERFLAGS@                :    0    0.00%
+                                                          0    0.00%
+81E2:SETUPVIEW@                      :    0    0.00%
+825E:ZOOMEDOUT                       :    1    0.01%
+                                                          1    0.01%
+82E8:UPDATEPOS@                      :    2    0.03%
+                                                          2    0.03%
+832A:SUBBULLET@                      :    0    0.00%
+                                                          0    0.00%
+838C:ADDBULLET@                      :    0    0.00%
+                                                          0    0.00%
+8587:SUBROCKET@                      :    0    0.00%
+                                                          0    0.00%
+85E9:ADDROCKET@                      :    0    0.00%
+                                                          0    0.00%
+86A4:SUBMISSILE@                     :    0    0.00%
+                                                          0    0.00%
+8706:ADDMISSILE@                     :    0    0.00%
+                                                          0    0.00%
+87E2:DRAWDASH@                       :    0    0.00%
+8938:DOSCOREDONE                     :    3    0.05%
+                                                          3    0.05%
+8B4B:CALCTDIST@                      :    0    0.00%
+                                                          0    0.00%
+8BBE:DISPMISSION@                    :    0    0.00%
+                                                          0    0.00%
+8BF4:SETCOMPASS@                     :    3    0.05%
+                                                          3    0.05%
+8C35:HIDEXSCORE@                     :    0    0.00%
+                                                          0    0.00%
+8F25:HSFX_HMUSIC_AREA@               :    0    0.00%
+8F43:StartHSFX                       :    1    0.01%
+8F80:StopHSFX                        :    2    0.03%
+8FD6:hsfx_driver_grunt               :  119    2.03%
+9030:launch_channels                 :    3    0.05%
+9033:launch_next_channel             :   25    0.42%
+904F:advance_channels                :  185    3.16%
+9095:update_frame                    :    1    0.01%
+909F:loop_frame                      :    7    0.11%
+90DF:next0_done                      :    3    0.05%
+90F5:stuff0                          :    2    0.03%
+90F6:no_loop0                        :    1    0.01%
+911E:next1_done                      :    1    0.01%
+9135:no_loop1                        :   37    0.63%
+919A:calc_next_audio                 :  106    1.81%
+91AD:end_freq                        :  102    1.74%
+92FC:hmusic_driver                   :   18    0.30%
+9313:hmusic_interrupt_core           :    4    0.06%
+9316:voiceLoop                       :   15    0.25%
+938C:voiceLoopEnd                    :   15    0.25%
+9391:voiceLaunchLoop                 :   46    0.78%
+                                                        693   11.84%
+9902:PAST_HSFX_HMUSIC@               :    0    0.00%
+9906:MPAGE0                          :    6    0.10%
+                                                          6    0.10%
+
+Total counts:          5852

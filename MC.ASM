@@ -1,0 +1,10 @@
+*
+* FILE - MC.ASM
+* DATE - 10/07/91
+*
+	INCLUDE	MC.PAL
+	INCLUDE	MC.HCR
+*
+* END MC.ASM
+*
+
